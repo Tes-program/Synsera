@@ -130,6 +130,121 @@ body {
   pointer-events: none;
 }
 
+.scan-lines {
+  position: relative;
+  overflow: hidden;
+}
+
+.scan-lines::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(99, 102, 241, 0.03) 2px,
+    rgba(99, 102, 241, 0.03) 4px
+  );
+  pointer-events: none;
+  animation: scanlines 0.1s linear infinite;
+}
+
+@keyframes scanlines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+/* Matrix text effects */
+.matrix-text {
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 5px currentColor;
+  animation: matrix-flicker 0.15s infinite linear alternate;
+}
+
+@keyframes matrix-flicker {
+  0% { opacity: 1; }
+  100% { opacity: 0.98; }
+}
+
+/* Glitch animation */
+.glitch {
+  animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+/* Matrix rain background animation */
+.matrix-rain {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(99, 102, 241, 0.1) 50%,
+    transparent 100%
+  );
+  animation: rain-fall 2s linear infinite;
+}
+
+@keyframes rain-fall {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Data processing effects */
+.data-processing {
+  animation: data-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes data-pulse {
+  0% { 
+    text-shadow: 0 0 5px #6366F1;
+    transform: scale(1);
+  }
+  100% { 
+    text-shadow: 0 0 20px #6366F1, 0 0 30px #6366F1;
+    transform: scale(1.02);
+  }
+}
+
+/* Terminal cursor */
+.terminal-blink::after {
+  content: '_';
+  animation: terminal-blink 1s infinite;
+  color: #6366F1;
+}
+
+@keyframes terminal-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Holographic effect */
+.holographic {
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(99, 102, 241, 0.1) 50%,
+    transparent 70%
+  );
+  background-size: 200% 200%;
+  animation: holographic-shift 3s ease-in-out infinite;
+}
+
+@keyframes holographic-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 /* Text reveal animation */
 .text-reveal {
   overflow: hidden;

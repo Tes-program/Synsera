@@ -1,28 +1,39 @@
+// src/components/sections/Contact.tsx
 'use client'
 
 import { useState, useRef } from 'react'
-import { motion, useInView, cubicBezier } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, Check } from 'lucide-react'
+import { motion, useInView } from 'framer-motion'
+import { Mail, Phone, MapPin, Send, Check, MessageCircle, Zap, Globe } from 'lucide-react'
+import { AnimatedText } from '@/components/ui/AnimatedText'
 
 const contactInfo = [
   {
     icon: Mail,
     label: 'Email',
     value: 'hello@synsera.com',
-    href: 'mailto:hello@synsera.com'
+    href: 'mailto:hello@synsera.com',
+    color: 'from-blue-400 to-cyan-500'
   },
   {
     icon: Phone,
     label: 'Phone',
     value: '+1 (555) 123-4567',
-    href: 'tel:+15551234567'
+    href: 'tel:+15551234567',
+    color: 'from-cyan-400 to-teal-500'
   },
   {
     icon: MapPin,
     label: 'Location',
     value: 'Lagos, Nigeria',
-    href: '#'
+    href: '#',
+    color: 'from-blue-500 to-indigo-600'
   }
+]
+
+const socialLinks = [
+  { icon: MessageCircle, label: 'Discord', href: '#', color: 'from-indigo-400 to-purple-500' },
+  { icon: Globe, label: 'Website', href: '#', color: 'from-blue-400 to-cyan-500' },
+  { icon: Zap, label: 'Slack', href: '#', color: 'from-cyan-400 to-blue-500' },
 ]
 
 export const Contact = () => {
@@ -71,246 +82,421 @@ export const Contact = () => {
     }, 3000)
   }
 
-  const containerVariants = {
-    initial: {},
-    animate: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-  const itemVariants = {
-    initial: { opacity: 0, y: 60 },
-    animate: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.8, ease: cubicBezier(0.43, 0.13, 0.23, 0.96) }
-    }
-  }
-
   return (
-    <section id="contact" ref={ref} className="py-32 bg-gradient-to-b from-deep-black to-deep-black/95 relative overflow-hidden">
-      {/* Background Elements */}
+    <section 
+      id="contact" 
+      ref={ref} 
+      className="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-deep-black relative overflow-hidden"
+    >
+      {/* Ocean Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/3 left-0 w-96 h-96 bg-electric-indigo/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-electric-indigo/3 rounded-full blur-3xl" />
+        {/* Flowing water orbs */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.3, 1],
+            x: [0, 50, 0],
+            opacity: [0.1, 0.3, 0.1]
+          }}
+          transition={{ duration: 18, repeat: Infinity }}
+          className="absolute top-1/3 left-0 w-96 h-96 bg-gradient-to-r from-blue-400/20 via-cyan-500/20 to-teal-400/20 rounded-full blur-3xl"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            x: [0, -30, 0],
+            opacity: [0.05, 0.2, 0.05]
+          }}
+          transition={{ duration: 22, repeat: Infinity }}
+          className="absolute bottom-0 right-1/4 w-64 h-64 bg-gradient-to-r from-indigo-400/20 to-blue-500/20 rounded-full blur-3xl"
+        />
+        
+        {/* Floating bubbles */}
+        {Array.from({ length: 25 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${Math.random() * 10 + 5}px`,
+              height: `${Math.random() * 10 + 5}px`,
+            }}
+            animate={{
+              y: [0, -50, 0],
+              x: [0, Math.random() * 20 - 10, 0],
+              opacity: [0.2, 0.8, 0.2],
+              scale: [0.5, 1.2, 0.5]
+            }}
+            transition={{
+              duration: Math.random() * 8 + 6,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+              ease: "easeInOut"
+            }}
+          >
+            <div className="w-full h-full bg-gradient-to-r from-blue-400/40 to-cyan-400/40 rounded-full" />
+          </motion.div>
+        ))}
+
+        {/* Ocean waves effect */}
+        <motion.div
+          animate={{
+            background: [
+              'linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 50%, rgba(59, 130, 246, 0.1) 100%)',
+              'linear-gradient(90deg, rgba(6, 182, 212, 0.1) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(6, 182, 212, 0.1) 100%)'
+            ]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0"
+        />
+
+        {/* Grid with ocean effect */}
+        <motion.div 
+          animate={{ opacity: [0.05, 0.15, 0.05] }}
+          transition={{ duration: 6, repeat: Infinity }}
+          className="absolute inset-0"
+        >
+          <div className="grid grid-cols-12 grid-rows-8 h-full w-full">
+            {Array.from({ length: 96 }).map((_, i) => (
+              <motion.div 
+                key={i} 
+                className="border border-blue-400/10"
+                animate={{ 
+                  borderColor: [
+                    'rgba(59, 130, 246, 0.1)', 
+                    'rgba(6, 182, 212, 0.2)', 
+                    'rgba(59, 130, 246, 0.1)'
+                  ] 
+                }}
+                transition={{ duration: 5, repeat: Infinity, delay: i * 0.01 }}
+              />
+            ))}
+          </div>
+        </motion.div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        {/* Section Header */}
+        {/* Ocean Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
+          transition={{ duration: 0.8 }}
           className="text-center mb-20"
         >
-          <span className="text-electric-indigo font-mono text-sm tracking-wider uppercase mb-4 block">
-            Get In Touch
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6 tracking-tight">
-            Let&apos;s Create Something <span className="text-electric-indigo">Amazing</span>
-          </h2>
-          <p className="text-warm-gray text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+          <AnimatedText
+            text="GET IN TOUCH"
+            animation="wave"
+            className="text-blue-400 font-mono text-sm tracking-wider uppercase mb-4 block"
+            tag="span"
+          />
+          <AnimatedText
+            text="Let's Create Something Amazing"
+            animation="gradient-flow"
+            className="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6 tracking-tight"
+            tag="h2"
+          />
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-blue-200 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+          >
             Ready to bring your vision to life? We&apos;d love to hear about your project and explore 
             how we can help you achieve your goals.
-          </p>
+          </motion.p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Contact Form */}
+          {/* Enhanced Contact Form */}
           <motion.div
-            variants={containerVariants}
-            initial="initial"
-            animate={isInView ? "animate" : "initial"}
+            initial={{ opacity: 0, x: -60 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <motion.div
-              variants={itemVariants}
-              className="bg-gradient-to-br from-deep-black to-deep-black/50 border border-electric-indigo/20 rounded-2xl p-8 backdrop-blur-sm"
-            >
-              <h3 className="text-2xl text-white font-semibold mb-8">
-                Start Your Project
-              </h3>
+            <div className="relative bg-gradient-to-br from-blue-900/40 to-slate-900/40 backdrop-blur-sm border border-blue-400/20 rounded-3xl p-8 shadow-2xl">
+              {/* Animated border */}
+              <motion.div
+                className="absolute inset-0 rounded-3xl"
+                animate={{
+                  background: [
+                    'linear-gradient(0deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2))',
+                    'linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2))',
+                    'linear-gradient(180deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2))',
+                    'linear-gradient(270deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2))'
+                  ]
+                }}
+                transition={{ duration: 4, repeat: Infinity }}
+                style={{ padding: '2px' }}
+              >
+                <div className="w-full h-full bg-gradient-to-br from-blue-900/60 to-slate-900/60 rounded-3xl" />
+              </motion.div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-warm-gray text-sm font-medium mb-2">
-                      Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full bg-deep-black/50 border border-electric-indigo/30 rounded-lg px-4 py-3 text-white placeholder-warm-gray focus:outline-none focus:border-electric-indigo transition-colors duration-300"
-                      placeholder="Your name"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-warm-gray text-sm font-medium mb-2">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full bg-deep-black/50 border border-electric-indigo/30 rounded-lg px-4 py-3 text-white placeholder-warm-gray focus:outline-none focus:border-electric-indigo transition-colors duration-300"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
+              <div className="relative z-10">
+                <h3 className="text-2xl text-white font-semibold mb-8 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                  Start Your Project
+                </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-warm-gray text-sm font-medium mb-2">
-                      Company
-                    </label>
-                    <input
-                      type="text"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                      className="w-full bg-deep-black/50 border border-electric-indigo/30 rounded-lg px-4 py-3 text-white placeholder-warm-gray focus:outline-none focus:border-electric-indigo transition-colors duration-300"
-                      placeholder="Your company"
-                    />
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div
+                      whileFocus={{ scale: 1.02 }}
+                      className="relative"
+                    >
+                      <label className="block text-blue-200 text-sm font-medium mb-2">
+                        Name *
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full bg-slate-800/50 border border-blue-400/30 rounded-xl px-4 py-3 text-white placeholder-blue-300/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
+                        placeholder="Your name"
+                      />
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-cyan-400/10 rounded-xl opacity-0 pointer-events-none"
+                        whileFocus={{ opacity: 1 }}
+                      />
+                    </motion.div>
+                    
+                    <motion.div
+                      whileFocus={{ scale: 1.02 }}
+                      className="relative"
+                    >
+                      <label className="block text-blue-200 text-sm font-medium mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full bg-slate-800/50 border border-blue-400/30 rounded-xl px-4 py-3 text-white placeholder-blue-300/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
+                        placeholder="your@email.com"
+                      />
+                    </motion.div>
                   </div>
-                  
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-blue-200 text-sm font-medium mb-2">
+                        Company
+                      </label>
+                      <input
+                        type="text"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        className="w-full bg-slate-800/50 border border-blue-400/30 rounded-xl px-4 py-3 text-white placeholder-blue-300/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
+                        placeholder="Your company"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-blue-200 text-sm font-medium mb-2">
+                        Project Type
+                      </label>
+                      <select
+                        name="project"
+                        value={formData.project}
+                        onChange={handleInputChange}
+                        className="w-full bg-slate-800/50 border border-blue-400/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
+                      >
+                        <option value="">Select a service</option>
+                        <option value="web-development">Web Development</option>
+                        <option value="mobile-app">Mobile App</option>
+                        <option value="ui-ux-design">UI/UX Design</option>
+                        <option value="digital-strategy">Digital Strategy</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
                   <div>
-                    <label className="block text-warm-gray text-sm font-medium mb-2">
-                      Project Type
+                    <label className="block text-blue-200 text-sm font-medium mb-2">
+                      Budget Range
                     </label>
                     <select
-                      name="project"
-                      value={formData.project}
+                      name="budget"
+                      value={formData.budget}
                       onChange={handleInputChange}
-                      className="w-full bg-deep-black/50 border border-electric-indigo/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-electric-indigo transition-colors duration-300"
+                      className="w-full bg-slate-800/50 border border-blue-400/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
                     >
-                      <option value="">Select a service</option>
-                      <option value="web-development">Web Development</option>
-                      <option value="mobile-app">Mobile App</option>
-                      <option value="ui-ux-design">UI/UX Design</option>
-                      <option value="digital-strategy">Digital Strategy</option>
-                      <option value="other">Other</option>
+                      <option value="">Select budget range</option>
+                      <option value="under-10k">Under $10,000</option>
+                      <option value="10k-25k">$10,000 - $25,000</option>
+                      <option value="25k-50k">$25,000 - $50,000</option>
+                      <option value="50k-100k">$50,000 - $100,000</option>
+                      <option value="over-100k">$100,000+</option>
                     </select>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-warm-gray text-sm font-medium mb-2">
-                    Budget Range
-                  </label>
-                  <select
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleInputChange}
-                    className="w-full bg-deep-black/50 border border-electric-indigo/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-electric-indigo transition-colors duration-300"
+                  <div>
+                    <label className="block text-blue-200 text-sm font-medium mb-2">
+                      Message *
+                    </label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      rows={5}
+                      className="w-full bg-slate-800/50 border border-blue-400/30 rounded-xl px-4 py-3 text-white placeholder-blue-300/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 resize-none"
+                      placeholder="Tell us about your project..."
+                    />
+                  </div>
+
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting || isSubmitted}
+                    whileHover={{ scale: isSubmitting || isSubmitted ? 1 : 1.02 }}
+                    whileTap={{ scale: isSubmitting || isSubmitted ? 1 : 0.98 }}
+                    className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-medium tracking-wide flex items-center justify-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                   >
-                    <option value="">Select budget range</option>
-                    <option value="under-10k">Under $10,000</option>
-                    <option value="10k-25k">$10,000 - $25,000</option>
-                    <option value="25k-50k">$25,000 - $50,000</option>
-                    <option value="50k-100k">$50,000 - $100,000</option>
-                    <option value="over-100k">$100,000+</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-warm-gray text-sm font-medium mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    required
-                    rows={5}
-                    className="w-full bg-deep-black/50 border border-electric-indigo/30 rounded-lg px-4 py-3 text-white placeholder-warm-gray focus:outline-none focus:border-electric-indigo transition-colors duration-300 resize-none"
-                    placeholder="Tell us about your project..."
-                  />
-                </div>
-
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting || isSubmitted}
-                  whileHover={{ scale: isSubmitting || isSubmitted ? 1 : 1.05 }}
-                  whileTap={{ scale: isSubmitting || isSubmitted ? 1 : 0.95 }}
-                  className="w-full bg-electric-indigo text-white px-8 py-4 rounded-lg font-medium tracking-wide flex items-center justify-center gap-3 hover:bg-indigo-600 transition-all duration-300 hover:shadow-lg hover:shadow-electric-indigo/25 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Sending...
-                    </>
-                  ) : isSubmitted ? (
-                    <>
-                      <Check size={20} />
-                      Message Sent!
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <Send size={20} />
-                    </>
-                  )}
-                </motion.button>
-              </form>
-            </motion.div>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 8, repeat: Infinity }}
+                    />
+                    <span className="relative z-10 flex items-center gap-3">
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Sending...
+                        </>
+                      ) : isSubmitted ? (
+                        <>
+                          <Check size={20} />
+                          Message Sent!
+                        </>
+                      ) : (
+                        <>
+                          Send Message
+                          <Send size={20} />
+                        </>
+                      )}
+                    </span>
+                  </motion.button>
+                </form>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Contact Info */}
+          {/* Enhanced Contact Info */}
           <motion.div
-            variants={containerVariants}
-            initial="initial"
-            animate={isInView ? "animate" : "initial"}
+            initial={{ opacity: 0, x: 60 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.5 }}
             className="space-y-8"
           >
-            <motion.div variants={itemVariants}>
-              <h3 className="text-2xl text-white font-semibold mb-8">
+            <div>
+              <h3 className="text-2xl text-white font-semibold mb-8 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 Get In Touch
               </h3>
-              <p className="text-warm-gray leading-relaxed mb-8">
+              <p className="text-blue-200 leading-relaxed mb-8">
                 Have a question or want to discuss your project? We&apos;re here to help. 
                 Reach out to us and let&apos;s start the conversation about bringing your vision to life.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div variants={itemVariants} className="space-y-6">
+            {/* Contact Cards */}
+            <div className="space-y-6">
               {contactInfo.map((info, index) => (
                 <motion.a
                   key={info.label}
                   href={info.href}
-                  whileHover={{ x: 10 }}
-                  className="flex items-center gap-4 group cursor-pointer"
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
+                  whileHover={{ x: 10, scale: 1.02 }}
+                  className="group relative bg-gradient-to-r from-blue-900/30 to-slate-900/30 backdrop-blur-sm border border-blue-400/20 rounded-2xl p-6 hover:border-blue-400/40 transition-all duration-300 cursor-pointer block"
                 >
-                  <div className="w-12 h-12 bg-electric-indigo/10 rounded-lg flex items-center justify-center group-hover:bg-electric-indigo/20 transition-colors duration-300">
-                    <info.icon className="w-6 h-6 text-electric-indigo" />
-                  </div>
-                  <div>
-                    <div className="text-warm-gray text-sm">{info.label}</div>
-                    <div className="text-white font-medium group-hover:text-electric-indigo transition-colors duration-300">
-                      {info.value}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-cyan-400/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    whileHover={{
+                      background: [
+                        'linear-gradient(45deg, rgba(59, 130, 246, 0.05), rgba(6, 182, 212, 0.05))',
+                        'linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(99, 102, 241, 0.05))',
+                        'linear-gradient(225deg, rgba(99, 102, 241, 0.05), rgba(59, 130, 246, 0.05))'
+                      ]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  />
+                  <div className="relative z-10 flex items-center gap-4">
+                    <motion.div
+                      whileHover={{ rotate: 360, scale: 1.1 }}
+                      transition={{ duration: 0.6 }}
+                      className={`w-14 h-14 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300`}
+                    >
+                      <info.icon className="w-7 h-7 text-white" />
+                    </motion.div>
+                    <div>
+                      <div className="text-blue-200 text-sm font-medium">{info.label}</div>
+                      <div className="text-white font-semibold group-hover:text-blue-400 transition-colors duration-300">
+                        {info.value}
+                      </div>
                     </div>
                   </div>
                 </motion.a>
               ))}
-            </motion.div>
+            </div>
 
+            {/* Social Links */}
             <motion.div
-              variants={itemVariants}
-              className="bg-gradient-to-br from-electric-indigo/10 to-transparent border border-electric-indigo/20 rounded-2xl p-8"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="relative bg-gradient-to-br from-blue-900/30 to-slate-900/30 backdrop-blur-sm border border-blue-400/20 rounded-2xl p-6"
             >
               <h4 className="text-white font-semibold mb-4">
-                Response Time
+                Connect With Us
               </h4>
-              <p className="text-warm-gray text-sm leading-relaxed">
-                We typically respond to all inquiries within 24 hours during business days. 
-                For urgent matters, feel free to call us directly.
-              </p>
+              <div className="flex gap-4">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={social.label}
+                    href={social.href}
+                    whileHover={{ scale: 1.1, y: -5 }}
+                    whileTap={{ scale: 0.9 }}
+                    className={`w-12 h-12 bg-gradient-to-br ${social.color} rounded-lg flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300 group`}
+                    title={social.label}
+                  >
+                    <social.icon className="w-6 h-6 text-white group-hover:animate-pulse" />
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Response Time */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 1.2 }}
+              className="relative bg-gradient-to-br from-cyan-900/20 to-blue-900/20 backdrop-blur-sm border border-cyan-400/20 rounded-2xl p-6"
+            >
+              <motion.div
+                animate={{
+                  background: [
+                    'linear-gradient(45deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1))',
+                    'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.1))',
+                    'linear-gradient(225deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.1))'
+                  ]
+                }}
+                transition={{ duration: 6, repeat: Infinity }}
+                className="absolute inset-0 rounded-2xl"
+              />
+              <div className="relative z-10">
+                <h4 className="text-cyan-400 font-semibold mb-3 flex items-center gap-2">
+                  <Zap size={18} />
+                  Response Time
+                </h4>
+                <p className="text-blue-200 text-sm leading-relaxed">
+                  We typically respond to all inquiries within 24 hours during business days. 
+                  For urgent matters, feel free to call us directly.
+                </p>
+              </div>
             </motion.div>
           </motion.div>
         </div>
