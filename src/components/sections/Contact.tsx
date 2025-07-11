@@ -4,7 +4,6 @@
 import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, Check, MessageCircle, Zap, Globe } from 'lucide-react'
-import { AnimatedText } from '@/components/ui/AnimatedText'
 
 const contactInfo = [
   {
@@ -176,34 +175,138 @@ export const Contact = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        {/* Ocean Section Header */}
+        {/* Enhanced Ocean Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-16 md:mb-20"
         >
-          <AnimatedText
-            text="GET IN TOUCH"
-            animation="wave"
-            className="text-blue-400 font-mono text-sm tracking-wider uppercase mb-4 block"
-            tag="span"
-          />
-          <AnimatedText
-            text="Let's Create Something Amazing"
-            animation="gradient-flow"
-            className="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6 tracking-tight"
-            tag="h2"
-          />
-          <motion.p
+          {/* Ocean-style Subtitle */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.8 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="mb-6 md:mb-8"
+          >
+            <div className="relative inline-flex items-center">
+              {/* Flowing Water Effect */}
+              <motion.div
+                animate={{ 
+                  background: [
+                    'linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 50%, rgba(59, 130, 246, 0.1) 100%)',
+                    'linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(6, 182, 212, 0.1) 100%)',
+                    'linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 50%, rgba(59, 130, 246, 0.1) 100%)'
+                  ]
+                }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="absolute inset-0 rounded-full blur-lg"
+              />
+              
+              <div className="relative bg-slate-900/80 border border-blue-400/30 rounded-full px-6 py-3 md:px-8 md:py-4 backdrop-blur-sm">
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{ 
+                      y: [0, -3, 0],
+                      opacity: [0.7, 1, 0.7]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-2 h-2 bg-blue-400 rounded-full shadow-lg shadow-blue-400/50"
+                  />
+                  <span className="text-blue-400 font-mono text-xs md:text-sm tracking-wider uppercase font-semibold">
+                    Get In Touch
+                  </span>
+                  <motion.div
+                    animate={{ 
+                      y: [0, -3, 0],
+                      opacity: [1, 0.7, 1]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                    className="w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"
+                  />
+                </div>
+                
+                {/* Ripple Effect */}
+                <motion.div
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="absolute inset-0 border-2 border-blue-400/30 rounded-full"
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Liquid Title Effect */}
+          <div className="mb-6 md:mb-8 overflow-hidden">
+            <motion.h2
+              initial={{ y: 100, opacity: 0 }}
+              animate={isInView ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="relative font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-none font-bold"
+            >
+              {'Let\'s Create Something'.split('').map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ y: 100, opacity: 0, scaleY: 0.3 }}
+                  animate={isInView ? { y: 0, opacity: 1, scaleY: 1 } : {}}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: 0.6 + index * 0.02,
+                    type: 'spring',
+                    damping: 12,
+                    stiffness: 200
+                  }}
+                  whileHover={{
+                    y: -5,
+                    color: '#60A5FA',
+                    transition: { duration: 0.2 }
+                  }}
+                  className="inline-block cursor-default"
+                  style={{ transformOrigin: 'bottom center' }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </motion.span>
+              ))}
+              <br />
+              <motion.span
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 1, delay: 1.2, type: 'spring', damping: 10 }}
+                className="inline-block"
+                style={{
+                  background: 'linear-gradient(45deg, #3B82F6, #06B6D4, #8B5CF6)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  backgroundSize: '200% 200%',
+                  animation: 'gradient-flow 3s ease-in-out infinite'
+                }}
+              >
+                Amazing
+              </motion.span>
+            </motion.h2>
+          </div>
+
+          {/* Ocean Description */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-blue-200 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+            transition={{ duration: 0.8, delay: 1 }}
+            className="max-w-3xl mx-auto"
           >
-            Ready to bring your vision to life? We&apos;d love to hear about your project and explore 
-            how we can help you achieve your goals.
-          </motion.p>
+            <p className="text-blue-200 text-base md:text-lg lg:text-xl leading-relaxed">
+              Ready to bring your vision to life? We&apos;d love to hear about your project and explore{' '}
+              <span className="relative">
+                <span 
+                  className="text-cyan-400 font-semibold bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20"
+                  style={{ textShadow: '0 0 10px rgba(6, 182, 212, 0.3)' }}
+                >
+                  how we can help you achieve your goals
+                </span>
+              </span>
+              .
+            </p>
+          </motion.div>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -501,6 +604,13 @@ export const Contact = () => {
           </motion.div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes gradient-flow {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+      `}</style>
     </section>
   )
 }

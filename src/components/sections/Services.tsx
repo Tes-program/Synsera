@@ -3,8 +3,7 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Code, Palette, Smartphone, Zap, Globe, Database } from 'lucide-react'
-import { AnimatedText } from '@/components/ui/AnimatedText'
+import { Code, Palette, Smartphone, Zap, Globe, Database, TrendingUp, ArrowRight } from 'lucide-react'
 
 const services = [
   {
@@ -84,34 +83,81 @@ export const Services = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        {/* Section Header */}
+        {/* Enhanced Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
-          className="text-center mb-20"
+          className="text-center mb-16 md:mb-20"
         >
-          <AnimatedText
-            text="WHAT WE DO"
-            animation="shimmer"
-            className="text-electric-indigo font-mono text-sm tracking-wider uppercase mb-4 block"
-            tag="span"
-          />
-          <AnimatedText
-            text="Our Services"
-            animation="split"
-            className="font-display text-4xl md:text-5xl lg:text-6xl text-deep-black mb-6 tracking-tight"
-            tag="h2"
-          />
-          <motion.p
+          {/* Floating Subtitle with Icons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mb-6 md:mb-8"
+          >
+            <div className="inline-flex items-center gap-4 bg-gradient-to-r from-electric-indigo/10 via-purple-500/10 to-pink-500/10 border border-electric-indigo/20 rounded-full px-6 py-3 md:px-8 md:py-4">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-3 h-3 bg-gradient-to-r from-electric-indigo to-purple-500 rounded-full"
+              />
+              <span className="text-electric-indigo font-mono text-xs md:text-sm tracking-wider uppercase font-semibold">
+                What We Do
+              </span>
+              <motion.div
+                animate={{ scale: [1.2, 1, 1.2] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-3 h-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
+              />
+            </div>
+          </motion.div>
+
+          {/* Main Title with Character Animation */}
+          <div className="mb-6 md:mb-8 overflow-hidden">
+            <motion.h2
+              initial={{ y: 100, opacity: 0 }}
+              animate={isInView ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.4, ease: [0.43, 0.13, 0.23, 0.96] }}
+              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-deep-black tracking-tight leading-none font-bold"
+            >
+              {'Our Services'.split('').map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ y: 100, opacity: 0, rotateX: 90 }}
+                  animate={isInView ? { y: 0, opacity: 1, rotateX: 0 } : {}}
+                  transition={{ 
+                    duration: 0.6, 
+                    delay: 0.6 + index * 0.03,
+                    ease: [0.43, 0.13, 0.23, 0.96]
+                  }}
+                  className="inline-block"
+                  style={{ transformOrigin: 'bottom center' }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </motion.span>
+              ))}
+            </motion.h2>
+          </div>
+
+          {/* Enhanced Description */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="max-w-3xl mx-auto"
           >
-            We offer comprehensive digital solutions that combine technical excellence 
-            with creative innovation to deliver exceptional results.
-          </motion.p>
+            <p className="text-gray-600 text-base md:text-lg lg:text-xl leading-relaxed">
+              We offer comprehensive digital solutions that combine{' '}
+              <span className="relative">
+                <span className="text-electric-indigo font-semibold bg-electric-indigo/10 px-2 py-1 rounded">
+                  technical excellence
+                </span>
+              </span>{' '}
+              with creative innovation to deliver exceptional results.
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Enhanced Services Grid */}
@@ -181,27 +227,32 @@ export const Services = () => {
         </div>
 
         {/* Enhanced CTA */}
-        <motion.div
+                <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.8, delay: 1 }}
           className="text-center mt-16"
         >
           <motion.button
             whileHover={{ 
               scale: 1.05,
-              boxShadow: '0 20px 40px rgba(99, 102, 241, 0.2)',
-              background: 'linear-gradient(45deg, #6366F1, #8B5CF6)'
+              boxShadow: '0 20px 40px rgba(34, 211, 238, 0.3)',
             }}
             whileTap={{ scale: 0.95 }}
-            className="bg-electric-indigo text-white px-8 py-4 rounded-full font-medium tracking-wide hover:bg-indigo-600 transition-all duration-300 relative overflow-hidden group"
+            className="group relative bg-gradient-to-r from-cyan-400 to-purple-500 text-black px-8 py-4 rounded-full font-bold tracking-wide flex items-center gap-3 mx-auto overflow-hidden"
           >
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-electric-indigo via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-400"
               animate={{ rotate: 360 }}
               transition={{ duration: 8, repeat: Infinity }}
             />
-            <span className="relative z-10">Discuss Your Project</span>
+            <span className="relative z-10 flex items-center gap-3">
+              Discuss Your Project
+              <ArrowRight 
+                size={20} 
+                className="transition-transform duration-300 group-hover:translate-x-1" 
+              />
+            </span>
           </motion.button>
         </motion.div>
       </div>

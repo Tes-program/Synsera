@@ -4,7 +4,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Award, Users, Coffee, Heart, Zap, Target, Lightbulb, Handshake } from 'lucide-react'
-import { AnimatedText } from '@/components/ui/AnimatedText'
 
 const stats = [
   { icon: Award, label: 'Awards Won', value: '15+', color: 'from-orange-400 to-red-500' },
@@ -111,34 +110,129 @@ export const About = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        {/* Warm Section Header */}
+        {/* Enhanced Warm Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-16 md:mb-20"
         >
-          <AnimatedText
-            text="ABOUT SYNSERA"
-            animation="wave"
-            className="text-orange-600 font-mono text-sm tracking-wider uppercase mb-4 block"
-            tag="span"
-          />
-          <AnimatedText
-            text="Redefining Digital Excellence"
-            animation="morph"
-            className="font-display text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-6 tracking-tight"
-            tag="h2"
-          />
-          <motion.p
+          {/* Warm Floating Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mb-6 md:mb-8"
+          >
+            <div className="relative inline-flex items-center">
+              {/* Warm Glow Effect */}
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  opacity: [0.3, 0.6, 0.3]
+                }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="absolute inset-0 bg-gradient-to-r from-orange-400/20 via-amber-400/20 to-yellow-400/20 rounded-full blur-lg"
+              />
+              
+              <div className="relative bg-white/80 border border-orange-200/50 rounded-full px-6 py-3 md:px-8 md:py-4 backdrop-blur-sm shadow-lg">
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{ 
+                      rotate: 360,
+                      scale: [1, 1.2, 1]
+                    }}
+                    transition={{ 
+                      rotate: { duration: 8, repeat: Infinity, ease: 'linear' },
+                      scale: { duration: 2, repeat: Infinity }
+                    }}
+                    className="w-3 h-3 bg-gradient-to-r from-orange-400 to-amber-500 rounded-full shadow-lg"
+                  />
+                  <span className="text-orange-600 font-mono text-xs md:text-sm tracking-wider uppercase font-semibold">
+                    About Synsera
+                  </span>
+                  <motion.div
+                    animate={{ 
+                      rotate: -360,
+                      scale: [1.2, 1, 1.2]
+                    }}
+                    transition={{ 
+                      rotate: { duration: 6, repeat: Infinity, ease: 'linear' },
+                      scale: { duration: 2, repeat: Infinity, delay: 1 }
+                    }}
+                    className="w-3 h-3 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full shadow-lg"
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Morphing Title */}
+          <div className="mb-6 md:mb-8 overflow-hidden">
+            <motion.h2
+              initial={{ y: 100, opacity: 0, scale: 0.95 }}
+              animate={isInView ? { y: 0, opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 1, delay: 0.4, ease: [0.43, 0.13, 0.23, 0.96] }}
+              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 tracking-tight leading-none font-bold"
+            >
+              {'Redefining Digital'.split(' ').map((word, wordIndex) => (
+                <span key={wordIndex} className="inline-block mr-4">
+                  {word.split('').map((char, charIndex) => (
+                    <motion.span
+                      key={charIndex}
+                      initial={{ y: 100, opacity: 0, rotateY: 90 }}
+                      animate={isInView ? { y: 0, opacity: 1, rotateY: 0 } : {}}
+                      transition={{ 
+                        duration: 0.6, 
+                        delay: 0.6 + (wordIndex * 0.1) + (charIndex * 0.02),
+                        ease: [0.43, 0.13, 0.23, 0.96]
+                      }}
+                      whileHover={{
+                        scale: 1.1,
+                        color: '#EA580C',
+                        transition: { duration: 0.2 }
+                      }}
+                      className="inline-block cursor-default"
+                      style={{ transformOrigin: 'bottom center' }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </span>
+              ))}
+              <br />
+              <motion.span
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.8, delay: 1 }}
+                className="inline-block bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent"
+                style={{
+                  backgroundSize: '200% 200%',
+                  animation: 'gradient-flow 3s ease-in-out infinite'
+                }}
+              >
+                Excellence
+              </motion.span>
+            </motion.h2>
+          </div>
+
+          {/* Warm Description */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-gray-700 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="max-w-3xl mx-auto"
           >
-            Founded on the belief that exceptional design and cutting-edge technology can transform businesses, 
-            Synsera has become a trusted partner for companies seeking to make their mark in the digital world.
-          </motion.p>
+            <p className="text-gray-700 text-base md:text-lg lg:text-xl leading-relaxed">
+              Founded on the belief that exceptional design and cutting-edge technology can transform businesses,{' '}
+              <span className="relative">
+                <span className="text-orange-600 font-semibold bg-orange-100/60 px-2 py-1 rounded">
+                  Synsera has become a trusted partner
+                </span>
+              </span>{' '}
+              for companies seeking to make their mark in the digital world.
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Enhanced Stats with Warm Theme */}
@@ -288,12 +382,9 @@ export const About = () => {
               className="absolute inset-0 rounded-3xl"
             />
             <div className="relative z-10">
-              <AnimatedText
-                text="Ready to Start Your Journey?"
-                animation="wave"
-                className="text-3xl md:text-4xl text-gray-800 font-bold mb-4"
-                tag="h3"
-              />
+              <h3 className="text-3xl md:text-4xl text-gray-800 font-bold mb-4">
+                Ready to Start Your Journey?
+              </h3>
               <p className="text-gray-700 mb-8 max-w-2xl mx-auto text-lg">
                 Let&apos;s collaborate to create something extraordinary. Whether you&apos;re launching a new venture 
                 or transforming an existing business, we&apos;re here to help you succeed.
@@ -317,6 +408,13 @@ export const About = () => {
           </div>
         </motion.div>
       </div>
+
+      <style jsx>{`
+        @keyframes gradient-flow {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+      `}</style>
     </section>
   )
 }

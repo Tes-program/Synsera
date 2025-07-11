@@ -1,13 +1,12 @@
-// src/components/ui/AnimatedText.tsx
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView, cubicBezier, easeInOut } from 'framer-motion'
+import { motion, useInView, useAnimation, easeInOut } from 'framer-motion'
 
 interface AnimatedTextProps {
   text: string
   className?: string
-  animation?: 'split' | 'wave' | 'glitch' | 'shimmer' | 'morph' | 'gradient-flow'
+  animation?: 'magnetic' | 'wave' | 'glitch' | 'shimmer' | 'morph' | 'gradient-flow' | 'split-reveal' | 'liquid'
   staggerDelay?: number
   tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span'
 }
@@ -15,53 +14,106 @@ interface AnimatedTextProps {
 export const AnimatedText = ({
   text,
   className = '',
-  animation = 'split',
-  staggerDelay = 0.05,
+  animation = 'split-reveal',
+  staggerDelay = 0.03,
   tag = 'h1'
 }: AnimatedTextProps) => {
   const ref = useRef<HTMLElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [words, setWords] = useState<string[]>([])
+  const isInView = useInView(ref, { once: true, margin: '-50px' })
+  const controls = useAnimation()
+  const [characters, setCharacters] = useState<string[]>([])
 
   useEffect(() => {
-    setWords(text.split(' '))
+    // Split into characters for smoother animations
+    setCharacters(text.split(''))
   }, [text])
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start('animate')
+    }
+  }, [isInView, controls])
 
   const getAnimation = () => {
     switch (animation) {
-      case 'split':
+      case 'magnetic':
         return {
-          initial: { y: 100, opacity: 0, rotateX: 90 },
-          animate: { y: 0, opacity: 1, rotateX: 0 },
-          transition: { duration: 0.8, ease: cubicBezier(0.43, 0.13, 0.23, 0.96) }
+          initial: { y: 100, opacity: 0, filter: 'blur(8px)' },
+          animate: { y: 0, opacity: 1, filter: 'blur(0px)' },
+          transition: { 
+            type: 'spring' as const, 
+            damping: 12, 
+            stiffness: 200,
+            mass: 0.8
+          }
         }
-      case 'wave':
+      
+      case 'liquid':
         return {
-          initial: { y: 0 },
-          animate: { y: [-10, 0, -10] },
-          transition: { duration: 2, repeat: Infinity, ease: easeInOut }
+          initial: { 
+            y: 100, 
+            opacity: 0, 
+            scaleY: 0.3,
+            filter: 'blur(10px)'
+          },
+          animate: { 
+            y: 0, 
+            opacity: 1, 
+            scaleY: 1,
+            filter: 'blur(0px)'
+          },
+          transition: { 
+            type: 'spring' as const,
+            damping: 15,
+            stiffness: 150,
+            mass: 1.2
+          }
         }
+      
+      case 'split-reveal':
+        return {
+          initial: { 
+            y: '100%', 
+            opacity: 0,
+            rotateX: 90
+          },
+          animate: { 
+            y: '0%', 
+            opacity: 1,
+            rotateX: 0
+          },
+          transition: { 
+            duration: 0.8, 
+            ease: easeInOut
+          }
+        }
+      
       case 'glitch':
         return {
-          initial: { x: 0 },
-          animate: { x: [0, -2, 2, -2, 2, 0] },
-          transition: { duration: 0.5, repeat: Infinity, repeatDelay: 3 }
-        }
-      case 'shimmer':
-        return {
-          initial: { backgroundPosition: '0% 50%' },
-          animate: { backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] },
-          transition: { duration: 3, repeat: Infinity, ease: easeInOut }
-        }
-      case 'morph':
-        return {
-          initial: { scale: 1, rotateZ: 0 },
-          animate: { 
-            scale: [1, 1.05, 0.95, 1.02, 1],
-            rotateZ: [0, 2, -2, 1, 0]
+          initial: {
+            x: 0,
+            opacity: 1,
+            filter: 'hue-rotate(0deg)'
           },
-          transition: { duration: 4, repeat: Infinity, ease: easeInOut }
+          animate: {
+            x: [0, -3, 3, -2, 2, 0],
+            opacity: [1, 0.8, 1, 0.9, 1],
+            filter: [
+              'hue-rotate(0deg)',
+              'hue-rotate(90deg)',
+              'hue-rotate(0deg)',
+              'hue-rotate(-90deg)',
+              'hue-rotate(0deg)'
+            ]
+          },
+          transition: { 
+            duration: 0.6, 
+            repeat: Infinity, 
+            repeatDelay: 3,
+            ease: easeInOut
+          }
         }
+      
       default:
         return {
           initial: { opacity: 0, y: 50 },
@@ -71,24 +123,17 @@ export const AnimatedText = ({
     }
   }
 
-  const getTextStyle = () => {
+  const getWrapperStyle = () => {
     switch (animation) {
       case 'shimmer':
-        return {
-          background: 'linear-gradient(45deg, #6366F1, #8B5CF6, #EC4899, #F59E0B, #6366F1)',
-          backgroundSize: '300% 300%',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text'
-        }
       case 'gradient-flow':
         return {
-          background: 'linear-gradient(45deg, #00FFFF, #6366F1, #8B5CF6, #00FFFF)',
-          backgroundSize: '300% 300%',
+          background: 'linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.1) 70%, transparent 100%)',
+          backgroundSize: '200% 100%',
           WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
-          animation: 'gradient-flow 3s ease-in-out infinite'
+          animation: `shimmer 3s ease-in-out infinite`,
+          willChange: 'background-position'
         }
       default:
         return {}
@@ -101,25 +146,49 @@ export const AnimatedText = ({
     <MotionTag
       ref={ref}
       className={`inline-block ${className}`}
-      style={getTextStyle()}
+      style={{ 
+        perspective: '1000px',
+        ...getWrapperStyle()
+      }}
     >
-      {words.map((word, index) => (
-        <span key={index} className="inline-block overflow-hidden">
-          <motion.span
-            className="inline-block"
-            variants={getAnimation()}
-            initial="initial"
-            animate={isInView ? "animate" : "initial"}
-            transition={{
-              ...getAnimation().transition,
-              delay: index * staggerDelay
-            }}
-          >
-            {word}
-          </motion.span>
-          {index < words.length - 1 && <span className="inline-block w-2" />}
+      <style jsx>{`
+        @keyframes shimmer {
+          0%, 100% { background-position: -200% 0; }
+          50% { background-position: 200% 0; }
+        }
+      `}</style>
+      
+      {animation === 'split-reveal' || animation === 'magnetic' || animation === 'liquid' ? (
+        <span style={{ display: 'inline-block', overflow: 'hidden' }}>
+          {characters.map((char, index) => (
+            <motion.span
+              key={index}
+              style={{ 
+                display: 'inline-block',
+                transformOrigin: 'bottom center'
+              }}
+              variants={getAnimation()}
+              initial="initial"
+              animate={controls}
+              transition={{
+                ...getAnimation().transition,
+                delay: index * staggerDelay
+              }}
+            >
+              {char === ' ' ? '\u00A0' : char}
+            </motion.span>
+          ))}
         </span>
-      ))}
+      ) : (
+        <motion.span
+          variants={getAnimation()}
+          initial="initial"
+          animate={animation === 'glitch' ? 'animate' : controls}
+          style={{ display: 'inline-block' }}
+        >
+          {text}
+        </motion.span>
+      )}
     </MotionTag>
   )
 }

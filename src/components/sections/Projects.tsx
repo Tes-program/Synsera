@@ -5,7 +5,6 @@ import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ExternalLink, Github, ArrowRight, Eye, Star, TrendingUp } from 'lucide-react'
 import Image from 'next/image'
-import { AnimatedText } from '@/components/ui/AnimatedText'
 
 const projects = [
   {
@@ -61,8 +60,17 @@ const projects = [
 export const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(0)
   const [hoveredProject, setHoveredProject] = useState<number | null>(null)
+  const [isGlitching, setIsGlitching] = useState(false)
   const ref = useRef<HTMLElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+
+  // Handle glitch effect properly
+  const handleGlitchTrigger = () => {
+    setIsGlitching(true)
+    setTimeout(() => {
+      setIsGlitching(false)
+    }, 500)
+  }
 
   return (
     <section 
@@ -142,34 +150,138 @@ export const Projects = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        {/* Cyber Section Header */}
+        {/* Enhanced Cyber Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-16 md:mb-20"
         >
-          <AnimatedText
-            text="OUR PORTFOLIO"
-            animation="glitch"
-            className="text-cyan-400 font-mono text-sm tracking-wider uppercase mb-4 block"
-            tag="span"
-          />
-          <AnimatedText
-            text="Featured Projects"
-            animation="gradient-flow"
-            className="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6 tracking-tight"
-            tag="h2"
-          />
-          <motion.p
+          {/* Cyber-style Subtitle */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mb-6 md:mb-8"
+          >
+            <div className="relative inline-flex items-center">
+              {/* Scanning Background */}
+              <motion.div
+                animate={{ 
+                  background: [
+                    'linear-gradient(90deg, transparent 0%, rgba(34, 211, 238, 0.1) 50%, transparent 100%)',
+                    'linear-gradient(90deg, transparent 0%, rgba(139, 92, 246, 0.1) 50%, transparent 100%)',
+                    'linear-gradient(90deg, transparent 0%, rgba(34, 211, 238, 0.1) 50%, transparent 100%)'
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="absolute inset-0 rounded-full blur-sm"
+              />
+              
+              <div className="relative bg-slate-900/80 border border-cyan-400/30 rounded-full px-6 py-3 md:px-8 md:py-4 backdrop-blur-sm">
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 1, repeat: Infinity }}
+                    className="w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"
+                  />
+                  <span className="text-cyan-400 font-mono text-xs md:text-sm tracking-wider uppercase font-semibold">
+                    [ Our Portfolio ]
+                  </span>
+                  <motion.div
+                    animate={{ opacity: [1, 0.5, 1] }}
+                    transition={{ duration: 1, repeat: Infinity }}
+                    className="w-2 h-2 bg-purple-400 rounded-full shadow-lg shadow-purple-400/50"
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Fixed Glitch-style Title */}
+          <div className="mb-6 md:mb-8 overflow-hidden">
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={isInView ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="relative inline-block cursor-pointer"
+              onMouseEnter={handleGlitchTrigger}
+            >
+              <motion.h2
+                animate={isGlitching ? {
+                  x: [0, -1, 1, -1, 1, 0],
+                  y: [0, 1, -1, 1, -1, 0]
+                } : {}}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="relative z-20 font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-none font-bold"
+              >
+                Featured Projects
+              </motion.h2>
+              
+              {/* Glitch Layer 1 - Cyan */}
+              <motion.h2
+                animate={isGlitching ? {
+                  x: [0, -2, 2, -1, 1, 0],
+                  opacity: [0, 0.7, 0.5, 0.8, 0.6, 0]
+                } : { opacity: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="absolute top-0 left-0 z-10 font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-cyan-400 tracking-tight leading-none font-bold pointer-events-none"
+                style={{ 
+                  clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)'
+                }}
+              >
+                Featured Projects
+              </motion.h2>
+              
+              {/* Glitch Layer 2 - Pink */}
+              <motion.h2
+                animate={isGlitching ? {
+                  x: [0, 2, -2, 1, -1, 0],
+                  opacity: [0, 0.6, 0.8, 0.5, 0.7, 0]
+                } : { opacity: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut", delay: 0.1 }}
+                className="absolute top-0 left-0 z-10 font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-pink-400 tracking-tight leading-none font-bold pointer-events-none"
+                style={{ 
+                  clipPath: 'polygon(0 55%, 100% 55%, 100% 100%, 0 100%)'
+                }}
+              >
+                Featured Projects
+              </motion.h2>
+
+              {/* Static noise overlay */}
+              <motion.div
+                animate={isGlitching ? {
+                  opacity: [0, 0.1, 0.2, 0.1, 0]
+                } : { opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="absolute inset-0 z-30 bg-white mix-blend-overlay pointer-events-none"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.3'/%3E%3C/svg%3E")`,
+                }}
+              />
+            </motion.div>
+          </div>
+
+          {/* Cyber Description */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="max-w-3xl mx-auto"
           >
-            Explore our latest work showcasing innovative solutions and exceptional craftsmanship 
-            across various industries and platforms.
-          </motion.p>
+            <p className="text-gray-300 text-base md:text-lg lg:text-xl leading-relaxed">
+              Explore our latest work showcasing{' '}
+              <span className="relative">
+                <span 
+                  className="text-cyan-400 font-semibold bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20"
+                  style={{ textShadow: '0 0 10px rgba(34, 211, 238, 0.5)' }}
+                >
+                  innovative solutions
+                </span>
+              </span>{' '}
+              and exceptional craftsmanship across various industries and platforms.
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Enhanced Projects Grid */}
