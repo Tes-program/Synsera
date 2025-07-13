@@ -158,6 +158,83 @@ body {
   100% { transform: translateY(4px); }
 }
 
+/* Add to src/app/globals.css */
+
+/* Performance optimizations */
+* {
+  /* Remove the global transition that affects everything */
+  transition: none;
+}
+
+/* Add transitions only where needed */
+button,
+a,
+.transition-colors {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.transition-transform {
+  transition: transform 0.3s ease;
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+/* GPU acceleration for animated elements */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Fix gradient animation performance */
+@keyframes gradient-flow {
+  0%, 100% { 
+    background-position: 0% 50%; 
+    transform: translateZ(0); /* Force GPU acceleration */
+  }
+  50% { 
+    background-position: 100% 50%;
+    transform: translateZ(0);
+  }
+}
+
+/* Optimize text rendering */
+.font-display {
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Reduce paint areas */
+.contain-paint {
+  contain: paint;
+}
+
+.contain-layout {
+  contain: layout;
+}
+
+.contain-style {
+  contain: style;
+}
+
 /* Matrix text effects */
 .matrix-text {
   font-family: 'Courier New', monospace;

@@ -1,35 +1,61 @@
+// src/components/providers/SmoothScrollProvider.tsx
 'use client'
 
-import { useEffect } from 'react'
-import Lenis from '@studio-freight/lenis'
+import { useEffect, useRef } from 'react'
+import LocomotiveScroll from 'locomotive-scroll'
+import 'locomotive-scroll/dist/locomotive-scroll.css'
 
 interface SmoothScrollProviderProps {
   children: React.ReactNode
 }
 
 export const SmoothScrollProvider = ({ children }: SmoothScrollProviderProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const locomotiveRef = useRef<LocomotiveScroll | null>(null)
+
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
+    if (!scrollRef.current) return
+
+    // Initialize Locomotive Scroll
+    locomotiveRef.current = new LocomotiveScroll({
+      el: scrollRef.current,
+      smooth: true,
+      multiplier: 0.8, // Lower = smoother but less responsive
+      lerp: 0.05, // Lower = smoother
+      class: 'is-reveal',
+      smartphone: {
+        smooth: false, // Disable on mobile for better performance
+      },
+      tablet: {
+        smooth: true,
+        breakpoint: 768,
+      },
     })
 
-    function raf(time: number) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
+    // Update locomotive scroll
+    const handleResize = () => {
+      locomotiveRef.current?.update()
     }
 
-    requestAnimationFrame(raf)
+    // Scroll to top on load
+    locomotiveRef.current.scrollTo(0, { duration: 0 })
+
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      lenis.destroy()
+      window.removeEventListener('resize', handleResize)
+      locomotiveRef.current?.destroy()
     }
   }, [])
 
-  return <>{children}</>
+  // Update on route change
+  useEffect(() => {
+    locomotiveRef.current?.update()
+  })
+
+  return (
+    <div data-scroll-container ref={scrollRef}>
+      {children}
+    </div>
+  )
 }
